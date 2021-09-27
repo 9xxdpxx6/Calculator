@@ -109,10 +109,12 @@ namespace Calculator
                 }
                 else
                 {
-                    if (textBlock.Text.EndsWith(operation))
+                    char[] last_symbols = textBlock.Text.ToCharArray();
+                    if (last_symbols.Length > 1 && !int.TryParse(last_symbols[last_symbols.Length-1]+"", out _) && !int.TryParse(last_symbols[last_symbols.Length - 2] + "", out _))
                     {
-                        textBlock.Text = textBlock.Text.Substring(0, textBlock.Text.Length - 1) + operation;
-                        operation = "";
+                        operation = s;
+                        textBlock.Text = textBlock.Text.Substring(0, textBlock.Text.Length - 2) + operation;
+                        return;
                     }
                     if (rightOp != "" && rightOp != "ошибка! Деление на 0")
                     {
@@ -153,7 +155,7 @@ namespace Calculator
                 case "/":
                     if(lastOp != 0)
                     {
-                        rightOp = Math.Round((firstOp / lastOp), 4).ToString();
+                        rightOp = Math.Round(firstOp / lastOp, 4).ToString();
                         break;
                     }
                     else
